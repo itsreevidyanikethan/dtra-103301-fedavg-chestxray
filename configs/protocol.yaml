@@ -1,0 +1,38 @@
+# Registered protocol for DTRA-103301 (duplicate-aware FedAvg failure analysis).
+dataset:
+  name: COVID-19 Radiography Database (version 4)
+  source: https://www.kaggle.com/datasets/tawsifurrahman/covid19-radiography-database
+  classes: [COVID-19, Lung Opacity, Normal, Viral Pneumonia]
+  class_counts: {COVID-19: 3616, Lung Opacity: 6012, Normal: 10192, Viral Pneumonia: 1345}
+  total_images: 21165
+split:
+  method: duplicate-group-safe stratified
+  fractions: {train: 0.70, val: 0.15, test: 0.15}
+  expected_counts: {train: 14814, val: 3176, test: 3175}
+  seed: 340
+features:
+  backbone: resnet18
+  weights: IMAGENET1K_V1           # torchvision ResNet18_Weights.DEFAULT
+  input_size: 224
+  batch_size: 32
+  device: cpu
+  frozen: true
+  dim: 512
+  normalisation: per_image_l2      # z_i = h_i / (||h_i||_2 + eps)
+clients:
+  n: 4
+  dirichlet_alpha: 0.5
+  seed: 340
+  group_safe: true                 # duplicate groups never cross clients
+training:
+  probe: linear_512_to_4
+  optimiser: sgd
+  lr: 0.1
+  momentum: 0.9
+  weight_decay: 1.0e-4
+  batch_size: 256
+  fedavg: {rounds: 30, local_epochs: 1, aggregation: sample_size_weighted}
+  pooled: {epochs: 30}
+selection: {metric: val_macro_f1, test_evaluations: 1}
+evaluation:
+  bootstrap: {replicates: 1000, stratified_by_class: true, unit: duplicate_group}
