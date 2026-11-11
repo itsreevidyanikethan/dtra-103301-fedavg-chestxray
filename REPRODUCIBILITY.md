@@ -51,7 +51,7 @@ unavailable original source/splits remain material limits.
 ## Availability
 
 Small authentic outputs are in `runs/reconstruction_2026-11-11/`. The separate
-new-run archive contains source, feature rows, manifests, model weights,
-predictions and artifact checksums, without raw image data. No persistent DOI
+new-run evidence archive contains feature rows, manifests, model weights,
+predictions and artifact checksums, without raw image data. The source is preserved in the referenced GitHub commit. No persistent DOI
 has been issued for the new run. Source and artifact checksums serve different
 purposes and must not be confused with independent scientific validation.
