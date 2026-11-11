@@ -1,0 +1,17 @@
+{
+  "source": "new reconstruction run",
+  "weights": "ResNet18_Weights.IMAGENET1K_V1",
+  "transform": "ImageClassification(\n    crop_size=[224]\n    resize_size=[256]\n    mean=[0.485, 0.456, 0.406]\n    std=[0.229, 0.224, 0.225]\n    interpolation=InterpolationMode.BILINEAR\n)",
+  "shape": [
+    21165,
+    512
+  ],
+  "batch_size": 32,
+  "device": "cpu",
+  "torch_threads": 4,
+  "elapsed_seconds": 1031.1177607280001,
+  "torch": "2.5.1+cpu",
+  "torchvision": "0.20.1+cpu",
+  "manifest_sha256": "1f9e2a253fa43be20a7e0be2852ee521b82aebe32a1139f3ba1e95ea3750631f",
+  "feature_archive_sha256": "4e5ef2d69b84bc9fe14ebac29e1ab70bde07b6ecde8e4593d199572738ded1a7"
+}

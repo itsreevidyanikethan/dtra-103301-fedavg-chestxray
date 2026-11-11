@@ -1,0 +1,8 @@
+{
+  "source_url": "https://www.kaggle.com/api/v1/datasets/download/tawsifurrahman/covid19-radiography-database?datasetVersionNumber=4",
+  "requested_version": 4,
+  "archive_sha256": "b0ed06236824b582d28d08c3139471939e47c6f8c459a168ba386713b6fc3c30",
+  "archive_bytes": 780769059,
+  "retrieved_for": "new reconstruction run; not the unavailable original experiment",
+  "excluded_from_extraction": "lung masks; not used in the classification experiment"
+}

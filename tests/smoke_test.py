@@ -22,7 +22,7 @@ def main():
             for i in range(n):
                 split = "train" if (i // 4) % 10 < 7 else ("val" if (i // 4) % 10 < 9 else "test")
                 w.writerow({"path": f"img{i}.png", "class": classes[i % 4],
-                            "content_hash": f"h{i}", "group_id": f"g{i//2}",
+                            "content_hash": f"h{i}", "group_id": f"g{i}",
                             "split": split})
         feats = rng.normal(size=(n, 512)).astype(np.float32)
         # make classes separable so metrics are non-degenerate
@@ -30,7 +30,7 @@ def main():
             feats[i, (i % 4) * 8:(i % 4) * 8 + 8] += 2.0
         np.savez(os.path.join(d, "features.npz"), features=feats)
         out = os.path.join(d, "outputs")
-        run(man, os.path.join(d, "features.npz"), out=out)
+        run(man, os.path.join(d, "features.npz"), out=out, bootstrap_reps=20)
         assert os.path.exists(os.path.join(out, "results.json"))
     print("SMOKE TEST PASSED")
 

@@ -8,6 +8,11 @@ one locked-test evaluation with grouped stratified bootstrap (1,000 reps).
 import argparse
 import csv
 import json
+import shutil
+import hashlib
+import platform
+from importlib.metadata import version
+from bootstrap import grouped_bootstrap
 from collections import defaultdict
 
 import numpy as np
@@ -25,12 +30,27 @@ def l2_normalise(h, eps=1e-12):
 
 
 def load(manifest, features_npz):
-    rows = list(csv.DictReader(open(manifest)))
-    feats = l2_normalise(np.load(features_npz)["features"].astype(np.float32))
+    with open(manifest) as stream:
+        rows = list(csv.DictReader(stream))
+    archive = np.load(features_npz, allow_pickle=False)
+    feats = l2_normalise(archive['features'].astype(np.float32))
+    if feats.shape != (len(rows), 512) or not np.isfinite(feats).all():
+        raise ValueError('Feature rows/dimensions do not match the manifest')
+    if 'paths' in archive and archive['paths'].tolist() != [r['path'] for r in rows]:
+        raise ValueError('Feature row order differs from the manifest')
+    if 'content_hashes' in archive and archive['content_hashes'].tolist() != [r['content_hash'] for r in rows]:
+        raise ValueError('Feature image identities differ from the manifest')
     cls_index = {c: i for i, c in enumerate(sorted({r["class"] for r in rows}))}
     y = np.array([cls_index[r["class"]] for r in rows])
     split = np.array([r["split"] for r in rows])
     group = np.array([r["group_id"] for r in rows])
+    if set(split) != {'train', 'val', 'test'} or len(cls_index) != 4:
+        raise ValueError('Expected four classes and train/val/test partitions')
+    identities = defaultdict(set)
+    for g, partition, label in zip(group, split, y): identities[g].add((partition, int(label)))
+    for values in identities.values():
+        if len({v[0] for v in values}) != 1: raise ValueError('Duplicate group crosses splits')
+        if len({v[1] for v in values}) != 1: raise ValueError('Duplicate group has conflicting labels')
     return feats, y, split, group, cls_index
 
 
@@ -81,10 +101,22 @@ def macro_f1_of(probe, x, y):
     return f1_score(y.numpy(), pred, average="macro")
 
 
-def run(manifest, features_npz, out="outputs"):
+def run(manifest, features_npz, out="outputs", bootstrap_reps=1000):
     import os
     os.makedirs(out, exist_ok=True)
+    if os.path.exists(f"{out}/results.json"):
+        raise ValueError("Results already exist; use a new output directory for another run")
     feats, y, split, group, cls_index = load(manifest, features_npz)
+    shutil.copyfile(manifest, f'{out}/manifest.csv')
+    json.dump({'class_to_index': cls_index, 'class_order': list(cls_index),
+               'run_kind': 'new_reconstruction', 'original_artifacts_available': False,
+               'seed': SEED, 'torch_threads': torch.get_num_threads(),
+               'optimizer_state': 'SGD momentum resets on each local/pooled epoch, preserving supplied code',
+               'python': platform.python_version(),
+               'packages': {p: version(p) for p in ['numpy', 'scikit-learn', 'torch']},
+               'manifest_sha256': hashlib.sha256(open(manifest, 'rb').read()).hexdigest(),
+               'features_sha256': hashlib.sha256(open(features_npz, 'rb').read()).hexdigest()},
+              open(f'{out}/run_metadata.json', 'w'), indent=2)
     tr, va, te = (split == s for s in ("train", "val", "test"))
     xt, yt = torch.tensor(feats[tr]), torch.tensor(y[tr])
     xv, yv = torch.tensor(feats[va]), torch.tensor(y[va])
@@ -93,6 +125,13 @@ def run(manifest, features_npz, out="outputs"):
     clients = dirichlet_clients(y[tr], group[tr])
     counts = {c: np.bincount(y[tr][clients == c], minlength=4).tolist() for c in range(4)}
     json.dump(counts, open(f"{out}/client_class_counts.json", "w"), indent=2)
+    train_rows = np.flatnonzero(tr)
+    with open(f'{out}/client_assignments.csv', 'w', newline='') as f:
+        writer = csv.writer(f); writer.writerow(['manifest_row', 'group_id', 'label', 'client'])
+        writer.writerows((int(i), str(group[i]), int(y[i]), int(c)) for i, c in zip(train_rows, clients))
+    owners = defaultdict(set)
+    for g, c in zip(group[tr], clients): owners[g].add(int(c))
+    assert all(len(v) == 1 for v in owners.values())
 
     # ---- FedAvg: 30 rounds, 1 local epoch, size-weighted aggregation ----
     global_probe = make_probe()
@@ -132,6 +171,7 @@ def run(manifest, features_npz, out="outputs"):
 
     # ---- one locked-test evaluation ----
     results = {}
+    probabilities = {}
     for name, state in (("fedavg", best["state"]), ("pooled", best_p["state"])):
         probe = make_probe()
         probe.load_state_dict(state)
@@ -151,8 +191,22 @@ def run(manifest, features_npz, out="outputs"):
             "macro_ovr_auc": float(roc_auc_score(yn, prob, multi_class="ovr", average="macro")),
             "confusion_matrix": confusion_matrix(yn, pred).tolist(),
         }
+        probabilities[name] = prob
         np.save(f"{out}/{name}_test_probs.npy", prob)
         torch.save(state, f"{out}/{name}_probe.pt")
+    np.save(f'{out}/test_labels.npy', y[te])
+    np.save(f'{out}/test_groups.npy', group[te])
+    test_rows = np.flatnonzero(te)
+    with open(f'{out}/test_predictions.csv', 'w', newline='') as f:
+        writer = csv.writer(f)
+        writer.writerow(['manifest_row', 'group_id', 'true_label', 'model', 'prediction'] + [f'p_{c}' for c in cls_index])
+        for name, prob in probabilities.items():
+            writer.writerows([int(i), str(group[i]), int(y[i]), name, int(pr.argmax()), *pr.tolist()]
+                             for i, pr in zip(test_rows, prob))
+    boot, draws = grouped_bootstrap(y[te], probabilities, group[te], n_rep=bootstrap_reps)
+    json.dump(boot, open(f'{out}/bootstrap_summary.json', 'w'), indent=2)
+    with open(f'{out}/bootstrap_replicates.csv', 'w', newline='') as f:
+        writer = csv.DictWriter(f, fieldnames=list(draws[0])); writer.writeheader(); writer.writerows(draws)
     json.dump({"fedavg_history": hist_fed, "pooled_history": hist_pool,
                "selected": {"fedavg_round": best["round"], "pooled_epoch": best_p["epoch"]},
                "locked_test": results},
@@ -164,5 +218,8 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--manifest", default="manifest.csv")
     ap.add_argument("--features", default="features.npz")
+    ap.add_argument('--out', default='outputs')
+    ap.add_argument('--threads', type=int, default=4)
     a = ap.parse_args()
-    run(a.manifest, a.features)
+    torch.set_num_threads(a.threads)
+    run(a.manifest, a.features, out=a.out)

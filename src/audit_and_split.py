@@ -8,6 +8,7 @@ import argparse
 import csv
 import hashlib
 import os
+import json
 from collections import defaultdict
 
 import numpy as np
@@ -46,7 +47,10 @@ def main(root, out_csv="manifest.csv", seed=340):
     print(f"unique decoded images: {len(groups)}; duplicate groups: {len(dup)}; "
           f"duplicate rows: {sum(len(g) for g in dup.values())}")
 
-    # one representative class per group (groups are same-image copies)
+    conflicts = {h: g for h, g in groups.items() if len({r['class'] for r in g}) > 1}
+    if conflicts:
+        raise ValueError(f'{len(conflicts)} duplicate groups have conflicting labels; resolve a documented policy before training')
+    # one representative class per group (verified label-consistent copies)
     rng = np.random.default_rng(seed)
     group_items = list(groups.items())
     rng.shuffle(group_items)
@@ -64,8 +68,8 @@ def main(root, out_csv="manifest.csv", seed=340):
         assigned[cls][split] += n
         for r in g:
             r["split"] = split
-            r["group_id"] = h[:16]
-            split_counts[split][cls] += n / len(g) * 0 + 1  # count rows
+            r["group_id"] = h
+            split_counts[split][cls] += 1
 
     with open(out_csv, "w", newline="") as f:
         w = csv.DictWriter(f, fieldnames=["path", "class", "content_hash", "group_id", "split"])
@@ -81,6 +85,14 @@ def main(root, out_csv="manifest.csv", seed=340):
         for r in g:
             by_group[h].add(r["split"])
     assert all(len(v) == 1 for v in by_group.values()), "duplicate group crossed splits!"
+    report = {'total_rows': len(rows), 'unique_decoded_images': len(groups),
+              'duplicate_groups': len(dup), 'duplicate_rows': sum(map(len, dup.values())),
+              'conflicting_label_groups': len(conflicts), 'group_crossings': 0,
+              'seed': seed, 'split_class_counts': {s: dict(v) for s, v in split_counts.items()},
+              'duplicate_members': {h: [r['path'] for r in g] for h, g in dup.items()},
+              'provenance': 'newly generated split; original frozen split unavailable'}
+    with open(os.path.splitext(out_csv)[0] + '_audit.json', 'w') as f:
+        json.dump(report, f, indent=2)
     print("group-safety verified: 0 duplicate groups cross splits")
 
 

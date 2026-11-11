@@ -1,0 +1,61 @@
+{
+  "status": "new run; original manuscript experiment NOT recovered",
+  "original_selected": {
+    "fedavg_round": 26,
+    "pooled_epoch": 29
+  },
+  "new_selected": {
+    "fedavg_round": 29,
+    "pooled_epoch": 27
+  },
+  "metrics": {
+    "fedavg": {
+      "accuracy": {
+        "manuscript": 0.670866,
+        "new_run": 0.6683464566929134,
+        "difference": -0.0025195433070865914
+      },
+      "balanced_accuracy": {
+        "manuscript": 0.42794,
+        "new_run": 0.43445346732734824,
+        "difference": 0.006513467327348255
+      },
+      "macro_f1": {
+        "manuscript": 0.373895,
+        "new_run": 0.4272567604609935,
+        "difference": 0.0533617604609935
+      },
+      "macro_ovr_auc": {
+        "manuscript": 0.909121,
+        "new_run": 0.8928383801832018,
+        "difference": -0.016282619816798127
+      }
+    },
+    "pooled": {
+      "accuracy": {
+        "manuscript": 0.804094,
+        "new_run": 0.7795275590551181,
+        "difference": -0.024566440944881918
+      },
+      "balanced_accuracy": {
+        "manuscript": 0.739432,
+        "new_run": 0.7089935869668678,
+        "difference": -0.030438413033132217
+      },
+      "macro_f1": {
+        "manuscript": 0.780787,
+        "new_run": 0.7413506760124475,
+        "difference": -0.03943632398755248
+      },
+      "macro_ovr_auc": {
+        "manuscript": 0.940427,
+        "new_run": 0.926327439861692,
+        "difference": -0.014099560138308043
+      }
+    }
+  },
+  "client_allocation_matches_manuscript": false,
+  "zero_recall_finding_matches_manuscript": false,
+  "new_fedavg_covid_recall": 0.15129151291512916,
+  "new_fedavg_viral_recall": 0.0
+}

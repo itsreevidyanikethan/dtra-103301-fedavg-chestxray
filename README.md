@@ -1,91 +1,66 @@
-# DTRA-103301 — Duplicate-Aware FedAvg vs Pooled Linear Probe: Reproduction Package
+# DTRA-103301 — FedAvg and pooled chest-X-ray linear probes
 
-## Verification and artifact status
+This repository contains a new reconstruction of the supplied source package.
+The original experiment archive was unavailable. A complete new run on the
+public COVID-19 Radiography Database was executed on 11 November 2026.
+**It does not reproduce the manuscript's numerical results.**
 
-This repository currently contains source code and a protocol configuration.
-The original experiment checkpoints, row-level manifests and prediction archives
-are not included. Synthetic smoke tests check software execution only; they do
-not reproduce or validate the manuscript's numerical results. See
-[REPRODUCIBILITY.md](REPRODUCIBILITY.md) for the remaining evidence and code gaps.
+| Locked-test metric | New FedAvg | New pooled |
+|---|---:|---:|
+| Accuracy | 0.668346 | 0.779528 |
+| Balanced accuracy | 0.434453 | 0.708994 |
+| Macro F1 | 0.427257 | 0.741351 |
+| Macro one-vs-rest AUC | 0.892838 | 0.926327 |
 
-Code for *"Duplicate-Aware Evaluation of Simulated Non-IID FedAvg and Pooled
-Linear Probes on Frozen ResNet-18 Features for Four-Class Chest X-Ray
-Classification"* (Digital Technologies Research and Applications, Article ID
-103301). The study is a bounded failure-mode analysis: under one recorded
-non-IID configuration (Dirichlet α = 0.5, four synthetic clients, seed 340),
-simulated FedAvg collapsed to two predicted classes while a matched pooled
-linear probe did not.
+Selection used validation macro F1: FedAvg round 29 and pooled epoch 27.
+See [REPRODUCIBILITY.md](REPRODUCIBILITY.md) and the machine-readable
+[comparison](runs/reconstruction_2026-11-11/manuscript_comparison.json).
 
-## Registered protocol
-`configs/protocol.yaml` freezes every choice: duplicate-group-safe 70/15/15
-split, frozen ImageNet-1K-V1 ResNet-18 features (512-d, per-image L2
-normalisation), linear 512→4 probe, SGD (lr 0.1, momentum 0.9, wd 1e-4,
-batch 256), 30 FedAvg rounds × 1 local epoch with sample-size-weighted
-aggregation vs 30 pooled epochs, validation-macro-F1 selection, one locked-test
-evaluation. The configuration specifies a 1,000-replicate grouped stratified
-bootstrap, but the current experiment script does not implement it.
+## Run from the repository root
 
-## Dataset (not redistributed)
-Download the COVID-19 Radiography Database (version 4) from Kaggle:
-https://www.kaggle.com/datasets/tawsifurrahman/covid19-radiography-database
-and extract it so each class folder (COVID, Lung_Opacity, Normal,
-Viral Pneumonia) is under one root directory.
-
-## Reproduce
 ```bash
 pip install -r requirements.txt
-python src/audit_and_split.py --root /path/to/COVID-19_Radiography_Dataset
-python src/extract_features.py            # frozen ResNet-18, CPU, batch 32
-python src/experiment.py                  # FedAvg vs pooled + locked test
-python tests/smoke_test.py                # fast synthetic end-to-end check
-```
-
-## Outputs
-`outputs/` receives the client class counts, probe checkpoints, per-round and
-per-epoch validation histories, locked-test probabilities, confusion matrices
-and `results.json` with all summary measures.
-
-## Honest-reproduction notes
-- The audit/split script regenerates a duplicate-group-safe split with seed
-  340; because the greedy stratified assignment depends on the RNG stream, use
-  the archived `manifest.csv` from the paper's supplement when exact row-level
-  agreement with the published split is required.
-- Different hardware or library versions produce slightly different trained
-  probes; the frozen protocol, not bit-exact outputs, is what this package
-  reproduces. The qualitative failure mode (zero recall for two classes under
-  FedAvg) is the registered finding under this configuration.
-
-## License
-Code: MIT (see LICENSE). The images remain under the Kaggle dataset's own
-terms and are not redistributed here.
-
-## Check this code release
-
-Run these commands from the repository root, after installing the dependencies:
-
-```bash
-python tests/smoke_test.py
-python tests/test_checksums.py
-python make_checksums.py --verify SOURCE_CHECKSUMS.txt
-```
-
-`SOURCE_CHECKSUMS.txt` covers the distributed source and validation records.
-`validation/validation.json` records the actual synthetic checks performed for
-this code update and their software versions; it is not the original study
-environment. The `python` commands intentionally omit isolated mode (`-I`),
-because training/evaluation scripts import neighbouring modules under `src/`.
-
-Once authentic run outputs have been recovered and reviewed, verify their bytes
-separately:
-
-```bash
+python src/download.py
+python src/audit_and_split.py --help
+python src/audit_and_split.py --root data/COVID-19_Radiography_Dataset
+python src/extract_features.py --help
+python src/extract_features.py --manifest manifest.csv
+python src/experiment.py --manifest manifest.csv --features features.npz --threads 2
 python make_checksums.py outputs --output CHECKSUMS.txt
 python make_checksums.py --verify CHECKSUMS.txt
 ```
 
-The generator fails for a missing or empty artifact directory. Do not describe a
-source checksum manifest as verification of unavailable experiment outputs.
-Keep newly generated results labelled as new runs until their provenance and
-agreement with the manuscript have been assessed. Large checkpoints should be
-archived separately with an immutable identifier and checksums. The `.gitignore`
-excludes local datasets and model outputs from accidental source commits.
+Feature extraction uses the frozen torchvision ResNet-18 ImageNet weights.
+Inspect the entry-point help for optional batch and thread settings. Do not
+change choices in response to test results. Use a new output directory for a
+separate run; the experiment refuses to overwrite completed results.
+
+## Evidence and interpretation
+
+The new audit found 21,165 images, 21,106 unique decoded images, 44 duplicate
+groups and 103 duplicate-related rows. The 14,814/3,176/3,175 split keeps exact
+duplicates together. Patient-level independence cannot be established from
+these identifiers. Four clients are synthetic; this is not a clinical or
+multi-institutional federated validation.
+
+`outputs/` receives the frozen manifest, client assignments, selected probe
+weights, validation histories, labels, group identities, per-image predictions,
+1,000 bootstrap draws and provenance. Small summaries are tracked under
+`runs/reconstruction_2026-11-11/`; raw images are not redistributed.
+
+The supplied code's sorted class order and resetting of SGD momentum at each
+local/pooled epoch are retained and explicitly recorded. Protocol YAML is
+reference documentation; the entry points define the executed settings.
+
+## Check the code
+
+```bash
+python tests/smoke_test.py
+python tests/test_reconstruction.py
+python tests/test_checksums.py
+python make_checksums.py --verify SOURCE_CHECKSUMS.txt
+```
+
+Source checksum verification checks distributed bytes, not scientific validity.
+Code licence: MIT. Obtain the dataset from its official Kaggle source and follow
+its own licence and attribution terms.

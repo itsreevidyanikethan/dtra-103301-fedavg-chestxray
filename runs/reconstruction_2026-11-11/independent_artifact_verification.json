@@ -1,0 +1,17 @@
+{
+  "new_run": true,
+  "test_rows": 3175,
+  "unique_test_duplicate_groups": 3172,
+  "models": {
+    "fedavg": {
+      "selected_checkpoint_matches_saved_predictions": true,
+      "recomputed_metrics_match": true
+    },
+    "pooled": {
+      "selected_checkpoint_matches_saved_predictions": true,
+      "recomputed_metrics_match": true
+    }
+  },
+  "paired_bootstrap_draws_per_model": 1000,
+  "manuscript_agreement": false
+}

@@ -1,45 +1,57 @@
-# Reproducibility status for DTRA-103301
+# Reproducibility assessment — 11 November 2026
 
-The source package has been checked on synthetic data. Exact recovery of the
-reported experiment has not been established. No real-dataset training or
-locked-test evaluation was performed for this maintenance update.
+The original checkpoints, frozen splits, client assignments, predictions and
+software environment have not been recovered. New evidence must not be cited
+as the original manuscript experiment.
 
-## Original evidence required
+## What was executed
 
-| Evidence | Status in this repository |
-|---|---|
-| Executed source and exact original software environment | Original-run provenance not verified; current source and validation environment are available |
-| Frozen split manifest and decoded-image duplicate groups | Missing |
-| Frozen synthetic-client assignment | Missing |
-| Feature matrix, row-order metadata and feature-generation record | Missing |
-| Selected FedAvg and pooled checkpoints | Missing |
-| Validation histories and original selected round/epoch evidence | Missing |
-| Locked-test labels, row/group identities and probability arrays | Missing |
-| Metrics, 1,000 grouped bootstrap replicates, tables and figure scripts | Original archive missing |
-| Original artifact checksums and persistent archive DOI | Missing |
+The public Kaggle version-4 archive was downloaded, decoded-image duplicates
+were audited, and a group-safe split was generated using seed 340. Frozen
+ResNet-18 features were extracted for all 21,165 images. The supplied FedAvg
+and pooled probe training logic was run for 30 rounds/epochs, followed by a
+single evaluation of validation-selected models and 1,000 class-stratified
+duplicate-group bootstrap replicates. No tuning followed test evaluation.
 
-## Implementation limits identified
+The audit totals and split sizes agree with the manuscript. This does not
+establish that the individual rows are assigned to the same original split.
+The newly generated client class counts differ substantially from the
+manuscript table. Without original artifacts, the exact cause cannot be isolated.
 
-The present experiment script does not implement the 1,000-replicate grouped
-bootstrap described in its module description and protocol. It writes test
-probabilities but does not export the accompanying labels, row/group identities
-or complete row-level client assignments. Its SGD optimizer is recreated at
-each call to `epoch_update`, including every pooled epoch; equivalence with the
-original optimizer-state handling must be checked against the executed source.
-The split generator regenerates a split and cannot establish identity with the
-paper's missing frozen manifest. Protocol YAML is documentation: it is not read
-by these training scripts, so changing it alone does not change execution.
+## Comparison with the manuscript
 
-These scientific implementation choices were not changed in the maintenance
-update. Synthetic tests cannot establish the published zero-recall finding.
-The reported original environment also differs from the current test environment.
+| Quantity | Manuscript | New run |
+|---|---:|---:|
+| FedAvg selected round | 26 | 29 |
+| Pooled selected epoch | 29 | 27 |
+| FedAvg accuracy | 0.670866 | 0.668346 |
+| Pooled accuracy | 0.804094 | 0.779528 |
+| FedAvg macro F1 | 0.373895 | 0.427257 |
+| Pooled macro F1 | 0.780787 | 0.741351 |
+| FedAvg COVID recall | 0 | 82/542 |
+| FedAvg Viral Pneumonia recall | 0 | 0 |
 
-## Completion procedure
+The manuscript's claim of zero recall for BOTH COVID and Viral Pneumonia is
+not reproduced by this new run. Pooled training still performs better under
+this newly executed configuration. Do not replace original manuscript numbers
+silently or claim exact reproduction.
 
-Recover the original experiment directory, including the executed scripts and
-raw machine-readable outputs. Check row order, class-index mapping, group/split
-separation, selected checkpoints, and the reported metrics against that archive.
-Resolve any implementation differences before claiming exact reproduction.
-Then generate and verify artifact checksums and archive the permitted files with
-a persistent identifier. Update the manuscript's availability statement only
-after the promised files are actually retrievable.
+## Improvements to the supplied package
+
+The pipeline now exports labels and row identities, verifies feature ordering,
+rejects cross-split duplicate leakage and conflicting duplicate labels, saves
+client ownership, and implements paired class-stratified group bootstrapping.
+Source tests include malformed feature identities and duplicate leakage.
+
+The SGD optimizer still resets each epoch, as in the supplied implementation.
+The alphabetic class order is COVID, Lung_Opacity, Normal, Viral Pneumonia.
+These details are stored in run metadata. Hardware/library differences and
+unavailable original source/splits remain material limits.
+
+## Availability
+
+Small authentic outputs are in `runs/reconstruction_2026-11-11/`. The separate
+new-run archive contains source, feature rows, manifests, model weights,
+predictions and artifact checksums, without raw image data. No persistent DOI
+has been issued for the new run. Source and artifact checksums serve different
+purposes and must not be confused with independent scientific validation.

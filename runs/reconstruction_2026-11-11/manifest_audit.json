@@ -1,0 +1,223 @@
+{
+  "total_rows": 21165,
+  "unique_decoded_images": 21106,
+  "duplicate_groups": 44,
+  "duplicate_rows": 103,
+  "conflicting_label_groups": 0,
+  "group_crossings": 0,
+  "seed": 340,
+  "split_class_counts": {
+    "train": {
+      "Normal": 7134,
+      "COVID": 2531,
+      "Lung_Opacity": 4208,
+      "Viral Pneumonia": 941
+    },
+    "val": {
+      "COVID": 543,
+      "Normal": 1529,
+      "Lung_Opacity": 902,
+      "Viral Pneumonia": 202
+    },
+    "test": {
+      "COVID": 542,
+      "Normal": 1529,
+      "Lung_Opacity": 902,
+      "Viral Pneumonia": 202
+    }
+  },
+  "duplicate_members": {
+    "b604e1497679fe4ea3ecb3d670c1bca4ea6358722a010ac1c62ea026d2e3da69": [
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-137.png",
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-139.png"
+    ],
+    "3d658a7abf9b9b3e62092cd8eef6eedbfdf1cd8c16b739fe0debe83c5556c250": [
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-18.png",
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-21.png"
+    ],
+    "07b6bc2a74c75bfc651b8eb35fcdddd00de0f8b59ddc74ddeab2d9e20151ebf0": [
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-2084.png",
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-2085.png"
+    ],
+    "d41283ce9aa2785118c24d103c14facb3208ba8fa7d24c59d7f4532aee84d7df": [
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-2416.png",
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-2418.png"
+    ],
+    "84cc7707bb8a7e7cbee1c9ad47f213e8d8f01bc6eee8c736f0ba796d473c3f4c": [
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-2419.png",
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-2420.png",
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-2421.png"
+    ],
+    "1e2ae3963fae2418089f979af5643eee8b197af4057032ea0da32b97ffa16d1b": [
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-2422.png",
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-2423.png"
+    ],
+    "afcd3c58dda2774d15dd9fefec19a426049399febb0f1e62161eacce9984c6cd": [
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-2431.png",
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-2432.png"
+    ],
+    "e567dfd9c4e6cdbf12a39a0fbfa66125a5006ace83b9112337c623fff6370a17": [
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-2458.png",
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-2459.png"
+    ],
+    "a3ccf95b6123df1550dc0e082ed010b85cecdd1777bb1fa6f2281a894d986872": [
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-2492.png",
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-2493.png"
+    ],
+    "f14cf37974a40b24b9d2622cd7ff2b0cb09b49dc7af9e72fe73a4842005bd96e": [
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-2666.png",
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-2667.png"
+    ],
+    "f724e48eea57868b8da677adb8c46a2294dc97bd728d25b724f5358dd1597242": [
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-2677.png",
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-2678.png"
+    ],
+    "9202ec9c701fc22b3a9db8986f55861d4c4123643a91d5bae6d26358c8744d2b": [
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-2715.png",
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-2716.png",
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-2717.png",
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-2718.png",
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-2719.png"
+    ],
+    "09b5d984efb888162d32e1420d3d38e696a3945fc959936ad4df389683cb0091": [
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-277.png",
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-280.png"
+    ],
+    "18e216c14353e4433eefb054c36c6d4b491ff77313e6111127e1fd39e92c115f": [
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-2772.png",
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-2773.png",
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-2774.png"
+    ],
+    "498a451151681ff73bc7e89b98025e6a6424e51b16ac1ab17d53f649ade6345b": [
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-2804.png",
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-2805.png"
+    ],
+    "4fa9d94c55f81cc584e3bfc1f50e6930ed65ad268a96c9130ce0f69b8077bd25": [
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-2807.png",
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-2808.png",
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-2809.png",
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-2810.png",
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-2811.png",
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-2812.png",
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-2813.png"
+    ],
+    "cff7530884934c49e5c89456e64a9ae3a879e2c46095a9b050a637b885af4bc5": [
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-2822.png",
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-2823.png"
+    ],
+    "82e76fd3b3f6ccf6c4f50c24102fd0f0827cd9e714ad728207c54147cb7d07bd": [
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-2941.png",
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-2942.png"
+    ],
+    "d5e3f0f74303e4ed0fce4126ab8db8a6718cbd7fb53d23d79ce084299b14f650": [
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-2945.png",
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-2946.png"
+    ],
+    "edef523517f235e48dee2b295236d5a6d0f57f89876cad3fe8e378a9dbbf6e55": [
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-3140.png",
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-3141.png",
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-3142.png",
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-3143.png",
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-3144.png"
+    ],
+    "333b24e65047bcd29051194e58d5fafa3adb5f73e44ffddc7768b4f70c14fd9e": [
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-319.png",
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-321.png"
+    ],
+    "7d9cb4df52c84bd6e43c65a30527db65b10c91ce933f951fa795ccbe6e000455": [
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-3207.png",
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-3208.png"
+    ],
+    "fab66c1642dad3a882dcec146d04803ea831488b916f349a98d9e2850a1cd23d": [
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-3211.png",
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-3212.png"
+    ],
+    "25517bcc22dde0630fd596e0188083aa2d703dcaa7fef68907cb6fd9eeba714b": [
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-3222.png",
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-3223.png"
+    ],
+    "a56b19f58911956f331bbe74f5df3b208f9956b6caf63a9a6cb24cec64be8ef0": [
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-3298.png",
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-3299.png"
+    ],
+    "6acc88009604d65620867ce92a75415b98b750911c7609e1e31413fff99f61da": [
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-3373.png",
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-3374.png",
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-3375.png",
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-3376.png"
+    ],
+    "4768184d14c6adc427b824b6400daaff5ea34f00fa2195824159c362e8ba1b51": [
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-3402.png",
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-3403.png"
+    ],
+    "01a74e1f3ccd7384260198d199f09b7f2ef99870dc602def217b6995a40ae5ae": [
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-3426.png",
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-3427.png"
+    ],
+    "846e7bb0c4490d7bf28c6fd6f741f86cbea184566ff54dc3ffdfc5d8844837d7": [
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-3428.png",
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-3429.png"
+    ],
+    "3d19e620a26fc4bc90bff1d0833021819618b760dce759f5828bfff91df2bab1": [
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-3488.png",
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-3489.png"
+    ],
+    "ff5e1939e380f2cbe3ee2328d891611ad4136554966a420740084c80d6c240a4": [
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-3515.png",
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-3516.png"
+    ],
+    "c2b111ef17744f2332c46e1799a4f193f98339fc58c4426cc16ff8a6f0ef3c9c": [
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-3547.png",
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-3548.png"
+    ],
+    "fa33dd69cc6558d1eae4c6a5f70b057650b08f190dfd6ba8f7127d493375d8fc": [
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-3573.png",
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-3574.png"
+    ],
+    "de6b500cceac6f689b911af2334bb387ecd35f466d7324df5a799e4198470d42": [
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-3590.png",
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-3591.png"
+    ],
+    "0acba041a1ef8919421c6575fcbe1d3357b61b7d8ce12e062537816721917d40": [
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-3598.png",
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-3599.png"
+    ],
+    "9b12cf2f130eb49597e2191a961cdb7135e92aaf201ffded21ef34fd3e97745d": [
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-49.png",
+      "data/COVID-19_Radiography_Dataset/COVID/COVID-52.png"
+    ],
+    "534dae84ee1ae519bf21a9aeaebfc26c92b7995d9452670ececaa4f683723baa": [
+      "data/COVID-19_Radiography_Dataset/Normal/Normal-817.png",
+      "data/COVID-19_Radiography_Dataset/Normal/Normal-818.png"
+    ],
+    "b7db0e7eb966bde56b07f2276de29bcf32245571ec0f67fcc2cc019bc68adf07": [
+      "data/COVID-19_Radiography_Dataset/Viral Pneumonia/Viral Pneumonia-1052.png",
+      "data/COVID-19_Radiography_Dataset/Viral Pneumonia/Viral Pneumonia-1053.png"
+    ],
+    "6887476f62793069886c750e619138fb398208c195b43e5f206818c58608904f": [
+      "data/COVID-19_Radiography_Dataset/Viral Pneumonia/Viral Pneumonia-117.png",
+      "data/COVID-19_Radiography_Dataset/Viral Pneumonia/Viral Pneumonia-118.png"
+    ],
+    "eb7e8199dac30c34ce1a68f0268f8372680520df1bc647a28bef09785b94a3cf": [
+      "data/COVID-19_Radiography_Dataset/Viral Pneumonia/Viral Pneumonia-249.png",
+      "data/COVID-19_Radiography_Dataset/Viral Pneumonia/Viral Pneumonia-250.png"
+    ],
+    "32644ed94edc22a7344d7132ffc91d920f347b65cdca9ce0b5a8b98148e3075e": [
+      "data/COVID-19_Radiography_Dataset/Viral Pneumonia/Viral Pneumonia-294.png",
+      "data/COVID-19_Radiography_Dataset/Viral Pneumonia/Viral Pneumonia-295.png"
+    ],
+    "45c73d58583d2883916cf95264d8db7dc6187dc3241b3f807dc8bc517c5131f8": [
+      "data/COVID-19_Radiography_Dataset/Viral Pneumonia/Viral Pneumonia-595.png",
+      "data/COVID-19_Radiography_Dataset/Viral Pneumonia/Viral Pneumonia-596.png"
+    ],
+    "f04cc8e05a5ab60de4f6742061dc23b6b68d1565385484b107c6fcaece24cb6b": [
+      "data/COVID-19_Radiography_Dataset/Viral Pneumonia/Viral Pneumonia-74.png",
+      "data/COVID-19_Radiography_Dataset/Viral Pneumonia/Viral Pneumonia-75.png"
+    ],
+    "9504231dadc4215f3d3781c5e58cef63712ae815e01093c9890e8050ad6256c7": [
+      "data/COVID-19_Radiography_Dataset/Viral Pneumonia/Viral Pneumonia-953.png",
+      "data/COVID-19_Radiography_Dataset/Viral Pneumonia/Viral Pneumonia-954.png"
+    ]
+  },
+  "provenance": "newly generated split; original frozen split unavailable"
+}

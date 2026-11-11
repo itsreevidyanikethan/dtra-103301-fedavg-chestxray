@@ -1,0 +1,35 @@
+{
+  "date": "2026-11-11",
+  "run_kind": "new_reconstruction",
+  "python": "3.12.14",
+  "packages": {
+    "torch": "2.5.1+cpu",
+    "torchvision": "0.20.1+cpu",
+    "numpy": "2.3.5",
+    "scipy": "1.17.0",
+    "scikit-learn": "1.8.0",
+    "Pillow": "13.0.0"
+  },
+  "checks": [
+    {
+      "command": "python tests/test_reconstruction.py",
+      "passed": true,
+      "tests": 3,
+      "log": "...\n----------------------------------------------------------------------\nRan 3 tests in 0.159s\n\nOK\n"
+    },
+    {
+      "command": "python tests/test_checksums.py",
+      "passed": true,
+      "tests": 7,
+      "log": ".......\n----------------------------------------------------------------------\nRan 7 tests in 0.012s\n\nOK\n"
+    }
+  ],
+  "real_dataset_execution": {
+    "image_count": 21165,
+    "training_complete": true,
+    "locked_test_complete": true,
+    "bootstrap_replicates": 1000,
+    "artifact_reverification": true,
+    "matches_manuscript_results": false
+  }
+}

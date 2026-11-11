@@ -1,0 +1,27 @@
+{
+  "class_to_index": {
+    "COVID": 0,
+    "Lung_Opacity": 1,
+    "Normal": 2,
+    "Viral Pneumonia": 3
+  },
+  "class_order": [
+    "COVID",
+    "Lung_Opacity",
+    "Normal",
+    "Viral Pneumonia"
+  ],
+  "run_kind": "new_reconstruction",
+  "original_artifacts_available": false,
+  "seed": 340,
+  "torch_threads": 2,
+  "optimizer_state": "SGD momentum resets on each local/pooled epoch, preserving supplied code",
+  "python": "3.12.14",
+  "packages": {
+    "numpy": "2.3.5",
+    "scikit-learn": "1.8.0",
+    "torch": "2.5.1+cpu"
+  },
+  "manifest_sha256": "1f9e2a253fa43be20a7e0be2852ee521b82aebe32a1139f3ba1e95ea3750631f",
+  "features_sha256": "4e5ef2d69b84bc9fe14ebac29e1ab70bde07b6ecde8e4593d199572738ded1a7"
+}
