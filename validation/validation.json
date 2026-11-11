@@ -1,0 +1,53 @@
+{
+  "date": "2026-11-11",
+  "scope": "Synthetic smoke tests, integrity regression tests and command startup checks only. No real-dataset training, published-result reproduction or original-artifact validation.",
+  "python_version": "3.12.14",
+  "operating_system": "Linux",
+  "packages": {
+    "numpy": "2.3.5",
+    "scipy": "1.17.0",
+    "scikit-learn": "1.8.0",
+    "torch": "2.5.1+cpu",
+    "torchvision": "0.20.1+cpu",
+    "Pillow": "13.0.0",
+    "wfdb": "4.1.2",
+    "PyYAML": "6.0.3"
+  },
+  "thread_settings": {
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1"
+  },
+  "checks": [
+    {
+      "command": "python tests/smoke_test.py",
+      "exit_code": 0,
+      "stdout": "FedAvg selected round 30 val macro-F1 0.703453\nPooled selected epoch 30 val macro-F1 0.962477\n{\n  \"fedavg\": {\n    \"accuracy\": 0.75,\n    \"balanced_accuracy\": 0.75,\n    \"macro_precision\": 0.761904761904762,\n    \"macro_recall\": 0.75,\n    \"macro_f1\": 0.7475372924289333,\n    \"weighted_f1\": 0.7475372924289332,\n    \"mcc\": 0.6717236291465045,\n    \"log_loss\": 1.3562482891480048,\n    \"macro_ovr_auc\": 0.9099999999999999,\n    \"confusion_matrix\": [\n      [\n        9,\n        0,\n        1,\n        0\n      ],\n      [\n        0,\n        9,\n        0,\n        1\n      ],\n      [\n        1,\n        0,\n        5,\n        4\n      ],\n      [\n        2,\n        0,\n        1,\n        7\n      ]\n    ]\n  },\n  \"pooled\": {\n    \"accuracy\": 0.9,\n    \"balanced_accuracy\": 0.8999999999999999,\n    \"macro_precision\": 0.9285714285714286,\n    \"macro_recall\": 0.8999999999999999,\n    \"macro_f1\": 0.9010577915376677,\n    \"\nSMOKE TEST PASSED\n",
+      "stderr": ""
+    },
+    {
+      "command": "python tests/test_checksums.py",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ".......\n----------------------------------------------------------------------\nRan 7 tests in 0.022s\n\nOK\n"
+    },
+    {
+      "command": "python src/audit_and_split.py --help",
+      "exit_code": 0,
+      "stdout": "usage: audit_and_split.py [-h] --root ROOT\n\noptions:\n  -h, --help   show this help message and exit\n  --root ROOT  extracted dataset root\n",
+      "stderr": ""
+    },
+    {
+      "command": "python src/extract_features.py --help",
+      "exit_code": 0,
+      "stdout": "usage: extract_features.py [-h] [--manifest MANIFEST]\n\noptions:\n  -h, --help           show this help message and exit\n  --manifest MANIFEST\n",
+      "stderr": ""
+    },
+    {
+      "command": "python src/experiment.py --help",
+      "exit_code": 0,
+      "stdout": "usage: experiment.py [-h] [--manifest MANIFEST] [--features FEATURES]\n\noptions:\n  -h, --help           show this help message and exit\n  --manifest MANIFEST\n  --features FEATURES\n",
+      "stderr": ""
+    }
+  ],
+  "all_checks_passed": true
+}
